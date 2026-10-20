@@ -32,7 +32,3 @@ The demand module is a baseline demonstration, not a validated AI model. The ass
 - Batch-level expiry dates and write-offs, especially for Soorya
 - Vehicle capacity, delivery windows, order quantities, depot coordinates and route constraints
 
-## Before presenting
-- Confirm inconsistent revenue-share figures in the source brief with the challenge team.
-- Validate metric definitions and recommendations with finance/commercial stakeholders.
-- Clearly label all synthetic results and assumptions.
