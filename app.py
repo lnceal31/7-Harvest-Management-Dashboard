@@ -855,7 +855,7 @@ elif page == "New Channels":
         )
 
 
-elif section == "Rebate Calculator":
+elif page == "Rebate Calculator":
     st.title("🧮 Rebate Calculator")
     st.caption(
         "Calculate estimated rebates by company, outlet branch and product."
