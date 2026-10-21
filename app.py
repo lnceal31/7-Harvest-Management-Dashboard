@@ -367,8 +367,10 @@ with st.sidebar:
             "Operations",
             "Assortment",
             "Trade Spend",
-            "New Channels"
+            "New Channels",
+            "Rebate Calculator"
         ]
+       
     )
 
     st.divider()
@@ -851,6 +853,103 @@ elif page == "New Channels":
             "New-channel market sizing, opportunity scoring and scenario "
             "forecasts have not yet been implemented."
         )
+
+
+elif section == "Rebate Calculator":
+    st.title("🧮 Rebate Calculator")
+    st.caption(
+        "Calculate estimated rebates by company, outlet branch and product."
+    )
+
+    # Select the company
+    companies = sorted(df["Brand"].dropna().unique())
+
+    selected_company = st.selectbox(
+        "Select Company",
+        companies
+    )
+
+    # Filter branches based on the selected company
+    company_data = df[df["Brand"] == selected_company]
+
+    branches = sorted(company_data["Outlet"].dropna().unique())
+
+    selected_branch = st.selectbox(
+        "Select Outlet Branch",
+        branches
+    )
+
+    # Filter products based on the company and branch
+    branch_data = company_data[
+        company_data["Outlet"] == selected_branch
+    ]
+
+    products = sorted(branch_data["Product"].dropna().unique())
+
+    selected_product = st.selectbox(
+        "Select Product",
+        products
+    )
+
+    # Get sales records for the selected product
+    product_data = branch_data[
+        branch_data["Product"] == selected_product
+    ]
+
+    # Calculate sales from the existing dataset
+    total_sales = product_data["Sales AED"].sum()
+
+    st.divider()
+    st.subheader("Rebate Details")
+
+    rebate_rate = st.number_input(
+        "Rebate Rate (%)",
+        min_value=0.0,
+        max_value=100.0,
+        value=5.0,
+        step=0.5
+    )
+
+    # Calculate rebate
+    rebate_amount = total_sales * rebate_rate / 100
+
+    # Display results
+    col1, col2, col3 = st.columns(3)
+
+    col1.metric(
+        "Total Sales",
+        f"AED {total_sales:,.2f}"
+    )
+
+    col2.metric(
+        "Rebate Rate",
+        f"{rebate_rate:.2f}%"
+    )
+
+    col3.metric(
+        "Estimated Rebate",
+        f"AED {rebate_amount:,.2f}"
+    )
+
+    st.divider()
+
+    st.subheader("Calculation Summary")
+
+    st.write(f"**Company:** {selected_company}")
+    st.write(f"**Outlet Branch:** {selected_branch}")
+    st.write(f"**Product:** {selected_product}")
+    st.write(f"**Eligible Sales:** AED {total_sales:,.2f}")
+    st.write(f"**Rebate Rate:** {rebate_rate:.2f}%")
+
+    st.success(
+        f"Estimated rebate payable: AED {rebate_amount:,.2f}"
+    )
+
+    st.caption(
+        "Prototype calculation using synthetic sales data. "
+        "The rebate rate is illustrative and should be replaced "
+        "with the applicable commercial agreement."
+    )
 
 
 # ============================================================
